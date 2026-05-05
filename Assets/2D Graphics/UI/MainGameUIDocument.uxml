@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="main-container" style="flex-grow: 1; align-items: center; padding-top: 40px; padding-right: 40px; padding-bottom: 40px; padding-left: 40px;">
+        <ui:Label text="0" name="score-text" style="font-size: 80px; -unity-text-align: upper-center; padding-left: 2px; margin-bottom: 4px; margin-left: 4px; top: 15%; align-items: center; justify-content: center; align-self: center; align-content: center; -unity-font-style: normal;"/>
+    </ui:VisualElement>
+    <ui:Button text="| |" style="position: absolute; top: 7%; left: 5%; width: 140px; height: 120px; font-size: 35px; -unity-font-style: bold;"/>
+</ui:UXML>
