@@ -1,0 +1,6 @@
+:root {
+}
+
+.button:active {
+    scale: 1.25 1.25;
+}

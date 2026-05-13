@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: db54c9fdfde79dc229ab31e934b77969
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - cornerTopLeft: {fileID: 330426144, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - cornerTopRight: {fileID: 1774705802, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - cornerBottomLeft: {fileID: 750069715, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - cornerBottomRight: {fileID: -1987818770, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - edgeTop: {fileID: -192737040, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - edgeBottom: {fileID: 1271773849, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - edgeLeft: {fileID: 1263465405, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - edgeRight: {fileID: 1758483363, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - innerDark: {fileID: -2217638906192892890, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  - innerLight: {fileID: -1735975605, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
