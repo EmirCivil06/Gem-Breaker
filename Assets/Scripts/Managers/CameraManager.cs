@@ -1,14 +1,16 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
-[ExecuteAlways] // her zaman çalışır
+[ExecuteAlways] // Her zaman çalışmasını sağlar
 public class CameraManager : MonoBehaviour
 {
+    // Alanlar
     [Tooltip("Yatayda görünmesini istenilen toplam dünya birimi. " +
              "Örn: 8x8 board + her iki yanda 1 birim boşluk için 8 + 1 + 1")]
     [SerializeField] private float targetWorldWidth = 10f;
     private Camera cam;
     public Transform[] spawnSlots;
+    [SerializeField] private MainGameUIData mainGameUIData;
 
     // OnEnable
     private void OnEnable()
@@ -17,6 +19,7 @@ public class CameraManager : MonoBehaviour
         ManageDisplay();
     }
 
+    // Start
     private void Start()
     {
        spawnSlots = new Transform[3]; 
@@ -25,44 +28,54 @@ public class CameraManager : MonoBehaviour
     // Update
     private void Update()
     {
-        // editörde güncelleme amaçlı, build'da kaldırılabilir (ne de olsa kullanıcı yatayda oynamayacak)
+        // Editörde güncelleme amaçlı, build'da kaldırılabilir (ne de olsa kullanıcı yatayda oynamayacak)
         ManageDisplay();
     }
 
-    // betiğin kalbi
+    // Betiğin kalbi
     private void ManageDisplay()
     {
         if (cam == null) cam = GetComponent<Camera>();
         if (!cam.orthographic) return;
+        if (Screen.width <= 0 || Screen.height <= 0) return;
 
-        // kameranın boyutunu güncelleme
+        // Kameranın boyutunu güncelleme
         float aspect = (float)Screen.width / Screen.height;
         float totalWidth = targetWorldWidth + CalculateHorizontalPadding(aspect) * 2f;
 
         cam.orthographicSize = totalWidth / (2f * aspect);
 
-        // spawn slotların y değerlerini değiştirme
+        // Spawn slotların y değerlerini değiştirme
         foreach (Transform slot in spawnSlots) 
         {
             if (slot != null) slot.position = new Vector3(slot.position.x, CalculateSlotY(aspect));
         }
+        // Ana UI'ın label'ını düzeltiyoruz
+        mainGameUIData.camAspectToLabelSpacing = CalculateUILabelFlex((float)Screen.width / Screen.height);
     }
 
-    // yatay eksende padding hesabı
+    // Yatay eksende padding hesabı
     private float CalculateHorizontalPadding(float aspect)
     {
-        if (aspect < 0.5f) return 0.3f;  // dar/uzun telefon — minimum padding
-        else if (aspect < 0.6f) return 0.7f;  // telefon
+        if (aspect < 0.5f) return 0.3f;  // Dar/uzun telefon 
+        else if (aspect < 0.6f) return 0.7f;  // Telefon
         else if (aspect < 0.8f) return 1.5f;  // iPad / tablet
-        else return 2.5f;  // kare ekran
+        else return 2.5f;  // Kare ekran
     }
 
-    // dikey eksende spawn slotları için y koordinatı belirleme
+    // Dikey eksende spawn slotları için y koordinatı belirleme
     private float CalculateSlotY(float aspect)
     {
-        if (aspect < 0.5f) return -8f;  // dar/uzun telefon — minimum padding
-        else if (aspect < 0.6f) return -8f;  // telefon
+        if (aspect < 0.5f || aspect < 0.65f) return -8f;  // Dar/uzun telefon + telefon
         else if (aspect < 0.8f) return -6.75f;  // iPad / tablet
-        else return -6.75f;  // kare ekran
+        else return -7f;  // Kare ekran (veya fallback)
+    }
+
+    // Ana UI'daki labelın kötü gözükmesini engelleyecek metot
+    private float CalculateUILabelFlex(float aspect)
+    {
+        if (aspect < 0.5f || aspect < 0.65f) return 4.75f; // Dar/uzun telefon + telefon 
+        else if (aspect < 0.8f) return 18f; // iPad / tablet
+        else return 10f; // Kare ekran (veya fallback)
     }
 }

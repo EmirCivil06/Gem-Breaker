@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db54c9fdfde79dc229ab31e934b77969, type: 3}
   m_Name: MainBoardTile
   m_EditorClassIdentifier: Assembly-CSharp::BoardTile
-  cornerTopLeft: {fileID: -280925550, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  cornerTopRight: {fileID: -1462647346, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  cornerBottomLeft: {fileID: -1528507239, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  cornerBottomRight: {fileID: -305767454, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  edgeTop: {fileID: 1262194688, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  edgeBottom: {fileID: 1678973113, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  edgeLeft: {fileID: 812715297, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  edgeRight: {fileID: 1758390573, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  cornerTopLeft: {fileID: 1022006086, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  cornerTopRight: {fileID: 1443904751, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  cornerBottomLeft: {fileID: -2019142140, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  cornerBottomRight: {fileID: 1926155196, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  edgeTop: {fileID: 1383468555, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  edgeBottom: {fileID: 1746680503, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  edgeLeft: {fileID: 165257594, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  edgeRight: {fileID: 1639854, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
   innerDark: {fileID: -2217638906192892890, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
-  innerLight: {fileID: 1668462353, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}
+  innerLight: {fileID: -731162151908756296, guid: eca8794d318d15dcb9d980130de4a6d4, type: 3}

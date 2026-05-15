@@ -1,20 +1,20 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameManager : MonoBehaviour
 {
     private GameState currentState;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
-        
+        EnhancedTouchSupport.Enable();
+        TouchSimulation.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
-        ManageState();
+        EnhancedTouchSupport.Disable();
+        TouchSimulation.Disable();
     }
 
     private void ManageState()
@@ -29,10 +29,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 GameOver();
-                break;  
+                break;
             default:
                 Debug.LogError("Tanımsız bir GameState ile işlem yapılmaya çalışılıyor.");
-                break;      
+                break;
         }
     }
 
