@@ -4,11 +4,13 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 // Blok sınıfı. Yeni input sistemine göre refactor edildi. OnMouseXxx metotları yeni input sistemi ile uyumlu olmadığından
 // dolayı yeni input sisteminde yer alan EnhancedTouch kullanan metotlar ile scripti yapılandırdık.
-[RequireComponent(typeof(BoxCollider2D))] 
+[RequireComponent(typeof(BoxCollider2D))]
 public class Block : MonoBehaviour
 {
     // Alanlar
     [SerializeField] private float reducedScaleSize = 0.75f;
+    [SerializeField] private float draggingZ = -1f;
+    [SerializeField] private float fadeInAlpha = 0.6f;
 
     private BlockShape shape;
     private GameObject[] cellSprites;
@@ -25,7 +27,7 @@ public class Block : MonoBehaviour
 
     // Awake yapılandırması
     void Awake()
-    { 
+    {
         cam = Camera.main;
         InitCollider(GetComponent<BoxCollider2D>());
     }
@@ -71,6 +73,7 @@ public class Block : MonoBehaviour
         isDragging = false;
 
         Vector2Int anchor = AnchorCellFor(transform.position);
+        FadeIn();
 
         if (BoardManager.Instance.CanPlaceBlock(shape, anchor))
         {
@@ -82,7 +85,7 @@ public class Block : MonoBehaviour
             // Eğer bloğu yerleştiremiyorsak eski slotuna geri koy
             transform.position = originalPosition;
             transform.localScale = reducedScale;
-        }
+        } 
     }
 
     // Sürükleme eyleminde event handler
@@ -94,11 +97,19 @@ public class Block : MonoBehaviour
         Vector2Int anchor = AnchorCellFor(targetPos);
 
         if (BoardManager.Instance.CanPlaceBlock(shape, anchor))
-            transform.position = SnappedPositionFor(anchor);
+        {
+            Vector3 snap = SnappedPositionFor(anchor);
+            snap.z = draggingZ;
+            transform.position = snap;
+        }
         else
+        {
+            targetPos.z = draggingZ;
             transform.position = targetPos;
-    }
+        }
 
+    }
+    
     // Bloğa parmakla bastığımızda bas -> sürükle -> bırak döngüsünün başlaması
     private void HandleTouchBegan(Touch touch)
     {
@@ -111,7 +122,11 @@ public class Block : MonoBehaviour
         activeTouchId = touch.touchId;
         dragOffset = transform.position - worldPos;
         // Bloğa dokunulduğunu göstermek için 
-        transform.position += Vector3.up * 0.5f;
+        var p = transform.position + Vector3.up * 0.5f;
+        p.z = draggingZ;
+        transform.position = p;
+        FadeOut(fadeInAlpha);
+
         transform.localScale = originalScale;
     }
 
@@ -144,5 +159,23 @@ public class Block : MonoBehaviour
     {
         boxCollider.isTrigger = true;
         boxCollider.size = new Vector3(3f, 3f);
+    }
+
+    private void FadeOut(float alpha)
+    {
+        foreach (GameObject sprite in cellSprites)
+        {
+            SpriteRenderer renderer = sprite.GetComponent<SpriteRenderer>();
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, alpha);
+        }
+    }
+
+    private void FadeIn()
+    {
+        foreach (GameObject sprite in cellSprites)
+        {
+            SpriteRenderer renderer = sprite.GetComponent<SpriteRenderer>();
+            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1);
+        }
     }
 }

@@ -91,4 +91,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd29b42aa53c6fcdd9d28a47aa3f5f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Block
-  reducedScaleSize: 0.75
+  reducedScaleSize: 0.65
+  draggingZ: -1

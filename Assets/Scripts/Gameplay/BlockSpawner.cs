@@ -3,17 +3,32 @@ using UnityEngine;
 
 public class BlockSpawner : MonoBehaviour
 {
+    public static BlockSpawner Instance { get; private set; }
+
     // Var olan blok şekilleri ve renkli bloklar
     [SerializeField] private List<BlockShape> availableShapes;
     [SerializeField] private List<GameObject> availableBlocks;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Transform[] spawnSlots; // 3 adet boş transform
 
-    private Block[] currentBlocks;
+    // Aktif blokların yığıtı; yerleştirilen (destroy edilen) bloklar her frame ayıklanır
+    private Stack<Block> currentBlocks = new();
+
+    // GameManager'ın "elimdeki bloklar" üzerinde okuma yapabilmesi için dışarı açıyoruz
+    public IReadOnlyCollection<Block> CurrentBlocks => currentBlocks;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     private void Start()
     {
-        currentBlocks = new Block[spawnSlots.Length];
         // İşlem yapılacak öğeleri kopyala veya listeyi değiştirme mantığını güncelle
         List<BlockShape> newShapes = new(3);
 
@@ -27,7 +42,7 @@ public class BlockSpawner : MonoBehaviour
                 newShapes.Add(VectorExtensions.Rotated90(shape));
             }
             // Cube ise hiçbir şey yapmıyoruz
-            else if (sType != ShapeType.Cube) 
+            else if (sType != ShapeType.Cube)
             {
                 newShapes.Add(VectorExtensions.Rotated90(shape));
                 newShapes.Add(VectorExtensions.Rotated180(shape));
@@ -40,18 +55,34 @@ public class BlockSpawner : MonoBehaviour
         SpawnNewSet();
     }
 
-    // Update
     private void Update()
     {
-        // Şu anki blokların hepsi null olursa yeni set spawnlama
-        if (currentBlocks == null) return;
+        // Yerleştirilen bloklar Destroy edilir; yığıttaki ölü referansları temizle
+        PruneDestroyed();
 
-        bool allUsed = true;
-        for (int i = 0; i < currentBlocks.Length; i++)
+        // Yığıt tamamen boşaldıysa yeni set spawnla
+        if (currentBlocks.Count == 0) SpawnNewSet();
+    }
+
+    // Destroy edilmiş Unity nesnelerini yığıttan ayıkla. Stack rastgele eleman çıkarmaya
+    // izin vermediği için, sadece yaşayanları içeren yeni bir yığıt oluşturuyoruz.
+    private void PruneDestroyed()
+    {
+        if (currentBlocks.Count == 0) return;
+
+        bool anyDestroyed = false;
+        foreach (var b in currentBlocks)
         {
-            if (currentBlocks[i] != null) { allUsed = false; break; }
+            if (b == null) { anyDestroyed = true; break; }
         }
-        if (allUsed) SpawnNewSet();
+        if (!anyDestroyed) return;
+
+        var alive = new Stack<Block>(currentBlocks.Count);
+        foreach (var b in currentBlocks)
+        {
+            if (b != null) alive.Push(b);
+        }
+        currentBlocks = alive;
     }
 
     // Yeni blok seti spawnlama
@@ -64,7 +95,7 @@ public class BlockSpawner : MonoBehaviour
 
             var block = Instantiate(blockPrefab, spawnSlots[i].position, Quaternion.identity);
             block.Initialize(shape, blockColor);
-            currentBlocks[i] = block;
+            currentBlocks.Push(block);
         }
     }
 }
